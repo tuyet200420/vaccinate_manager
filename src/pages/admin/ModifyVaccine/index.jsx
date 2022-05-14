@@ -127,37 +127,16 @@ function ModifyVaccine({ action, match }) {
 
   function submitFromVaccine() {
     const values = vaccineForm.getFieldsValue();
-    const { min_age, max_age, ...valueNew } = values;
-    // const valueNewm = {
-    //   ...valueNew,
-    //   age: {
-    //     min_age:min_age,
-    //     max_age:max_age,
-    //   },
-    // };
-    // console.log(valueNewm)
     vaccineId
       ? dispatch(
           editVaccineAction({
             id: vaccineId,
-            data: {
-              ...valueNew,
-              age: {
-                min_age: min_age,
-                max_age: max_age,
-              },
-            },
+            data: values,
           })
         )
       : dispatch(
           createVaccineAction({
-            data: {
-              ...valueNew,
-              age: {
-                min_age: min_age,
-                max_age: max_age,
-              },
-            },
+            data: values,
           })
         );
     history.push("/admin/vaccines");
@@ -205,8 +184,8 @@ function ModifyVaccine({ action, match }) {
                       uid: "-1",
                       name: "image",
                       status: "done",
-                      url: vaccineForm.getFieldValue("image"),
-                      thumbUrl: vaccineForm.getFieldValue("image"),
+                      url: vaccineDetail?.data?.image,
+                      thumbUrl: vaccineDetail?.data?.image,
                     },
                   ]}
                 >
@@ -244,13 +223,6 @@ function ModifyVaccine({ action, match }) {
               >
                 <Select>{renderOptionOrigin()}</Select>
               </Form.Item>
-              <Form.Item
-                label="Chỉ định"
-                name="specify"
-                rules={[{ required: true, message: "bạn chưa nhập Chỉ định!" }]}
-              >
-                <Input.TextArea rows={3} />
-              </Form.Item>
               <Row>
                 <Col span={8}>
                   <Form.Item
@@ -275,15 +247,10 @@ function ModifyVaccine({ action, match }) {
                     label="Tuổi lớn nhất"
                     labelCol={{ span: 24 }}
                     name="max_age"
-                    rules={[
-                      { required: true, message: "bạn chưa độ tuổi lớn nhất!" },
-                    ]}
                   >
                     <InputNumber
                       defaultValue={
-                        vaccineId
-                          ? parseInt(vaccineDetail?.data?.age?.max_age)
-                          : "0"
+                        vaccineId && parseInt(vaccineDetail?.data?.age?.max_age)
                       }
                     />
                   </Form.Item>

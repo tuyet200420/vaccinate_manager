@@ -23,17 +23,17 @@ const SIDEBAR_MENU = [
   },
   {
     title: "Quản Lý Danh Sách Tiêm",
-    path: "/admin/customers",
+    path: "/admin/patientVaccines",
     icon: <Icons.SolutionOutlined />,
   },
   {
     title: "Quản Lý Kế Hoạch Tiêm Chủng",
-    path: "/admin/VaccinationPlans",
+    path: "/admin/vaccinationPlans",
     icon: <Icons.ShoppingOutlined />,
   },
   {
     title: "Quản Lý Thông Tin Sau Tiêm",
-    path: "/admin/accounts",
+    path: "/admin/afterInjections",
     icon: <Icons.UserOutlined />,
   }
 ];

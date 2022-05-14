@@ -2,7 +2,7 @@ import { fork } from 'redux-saga/effects';
 
 import vaccineSaga from './vaccine.saga';
 // import departmentSaga from './department.saga';
-import patientVaccinationPlanSaga from './PatientVaccination.saga';
+import patientVaccinationPlanSaga from './patientVaccination.saga';
 import vaccinationPlanSaga from './vaccinationPlan.saga';
 import storageSaga from './storage.saga';
 

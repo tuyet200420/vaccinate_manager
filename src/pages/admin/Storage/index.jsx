@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Row, Button, Input, Space, Popconfirm } from "antd";
+import {Button, Input, Space, Popconfirm } from "antd";
 import moment from "moment";
 
 import * as Icon from "@ant-design/icons";
 
-// import ModifyCategoryModal from "./components/ModifyCategoryModal";
+import ModifyStorageModal from "./components/ModifyStorageModal";
 
 import {
   getStorageListAction,
-  deleteStorageAction
+  deleteStorageAction,
+  createStorageAction,
+  editStorageAction
 } from "../../../redux/actions";
 
 import * as Style from "./styles";
@@ -17,7 +19,8 @@ import * as Style from "./styles";
 function StoragePage(props) {
   const [searchKey, setSearchKey] = useState("");
   const [isShowModifyModal, setIsShowModifyModal] = useState("");
-  // const [modifyCategoryData, setModifyCategoryData] = useState({});
+  const [modifyStorageData, setModifyStorageData] = useState({});
+
 
   const { storageList } = useSelector((state) => state.storageReducer);
 
@@ -33,23 +36,32 @@ function StoragePage(props) {
   //     getStorageListAction()
   //   );
   // }
-  // function handleSubmitForm(values) {
-  //   if (isShowModifyModal === "create") {
-  //     dispatch(
-  //       createCategoryAction({
-  //         data: values,
-  //       })
-  //     );
-  //   } else {
-  //     dispatch(
-  //       editCategoryAction({
-  //         id: modifyCategoryData.id,
-  //         data: values,
-  //       })
-  //     );
-  //   }
-  //   setIsShowModifyModal("");
-  // }
+  function handleSubmitForm(values) {
+    if (isShowModifyModal === "create") {
+      dispatch(
+        createStorageAction({
+          data: {
+            vaccine_id: values.vaccine_id,
+            quantity:values.add_quantity,
+            quantity_import: values.add_quantity
+          },
+        })
+      );
+    } else {
+      dispatch(
+        editStorageAction({
+          id: modifyStorageData._id,
+          data: {
+            vaccine_id: values.vaccine_id,
+            quantity: values.add_quantity + modifyStorageData.quantity ,
+            quantity_import: values.add_quantity + modifyStorageData.quantity_import,
+            quantity_sold : modifyStorageData.quantity_sold
+          },
+        })
+      );
+    }
+    setIsShowModifyModal("");
+  }
   // function totalQuantityProduct(productData) {
   //   return productData.reduce(
   //     (totalProduct, productItem) =>
@@ -81,7 +93,7 @@ function StoragePage(props) {
       key: "quantity",
     },
     {
-      title: "Đã nhập",
+      title: "Nhập",
       dataIndex: "quantity_import",
       key: "quantity_import",
     },
@@ -116,8 +128,11 @@ function StoragePage(props) {
               type="primary"
               ghost
               onClick={() => {
-                // setIsShowModifyModal("edit");
-                // setModifyCategoryData(record);
+                setIsShowModifyModal("edit");
+                setModifyStorageData({
+                  ...record,
+                  vaccine_id:record.vaccine_id._id
+                });
               }}
             >
               Thêm số lượng
@@ -162,10 +177,10 @@ function StoragePage(props) {
           </Style.Search>
           <Button
             type="primary"
-            // onClick={() => {
-            //   setIsShowModifyModal("create");
-            //   setModifyCategoryData({ name: "", price: 0 });
-            // }}
+            onClick={() => {
+              setIsShowModifyModal("create");
+              setModifyStorageData({ vaccine_id: "", quantity: 0 });
+            }}
           >
             Thêm mới
           </Button>
@@ -179,12 +194,12 @@ function StoragePage(props) {
         loading={storageList.load}
       />
 
-      {/* <ModifyCategoryModal
+      <ModifyStorageModal
         isShowModifyModal={isShowModifyModal}
         setIsShowModifyModal={setIsShowModifyModal}
         handleSubmitForm={handleSubmitForm}
-        modifyCategoryData={modifyCategoryData}
-      /> */}
+        modifyStorageData={modifyStorageData}
+      />
     </div>
   );
 }

@@ -42,33 +42,35 @@ const storageReducer = createReducer(initialState, {
     }
   },
 
-//   [SUCCESS(STORAGE_ACTION.CREATE_CATEGORY)]: (state, action) => {
-//     const { data } = action.payload;
-//     return {
-//       ...state,
-//       categoryList: {
-//         ...state.categoryList,
-//         data: [
-//           data,
-//           ...state.categoryList.data,
-//         ],
-//       },
-//     }
-//   },
+  [SUCCESS(STORAGE_ACTION.CREATE_STORAGE)]: (state, action) => {
+    const { data } = action.payload;
+    return {
+      ...state,
+      storageList: {
+        ...state.storageList,
+        data: [
+          data,
+          ...state.storageList.data,
+        ],
+      },
+    }
+  },
 
-//   [SUCCESS(STORAGE_ACTION.EDIT_CATEGORY)]: (state, action) => {
-//     const { data } = action.payload;
-//     const newCategoryList = [...state.categoryList.data];
-//     const categoryIndex = newCategoryList.findIndex((category) => category.id === data.id);
-//     newCategoryList.splice(categoryIndex, 1, data);
-//     return {
-//       ...state,
-//       categoryList: {
-//         ...state.categoryList,
-//         data: newCategoryList,
-//       },
-//     };
-//   },
+  [SUCCESS(STORAGE_ACTION.EDIT_STORAGE)]: (state, action) => {
+    const { data } = action.payload;
+    const newStorageList = [...state.storageList.data];
+
+    const storageIndex = newStorageList.findIndex((storage) => storage._id === data._id);
+    console.log(storageIndex)
+    newStorageList.splice(storageIndex, 1, data);
+    return {
+      ...state,
+      storageList: {
+        ...state.storageList,
+        data: newStorageList,
+      },
+    };
+  },
 
   [SUCCESS(STORAGE_ACTION.DELETE_STORAGE)]: (state, action) => {
     const { id } = action.payload;

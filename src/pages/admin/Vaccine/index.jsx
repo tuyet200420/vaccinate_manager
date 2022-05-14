@@ -16,14 +16,11 @@ function VaccinePage(props) {
   const { vaccineList } = useSelector((state) => state.vaccineReducer);
   const [searchKey, setSearchKey] = useState("");
 
-  // const [isShowUpdateModal, setIsShowUpdateModal] = useState("");
-  // const [quantityData, setQuantityData] = useState({});
-
   const tableColumn = [
     {
       dataIndex: "image",
       key: "image",
-      width: 100,
+      width: 50,
       align: "center",
       render: (value) => (
         <Style.ShowImage
@@ -48,11 +45,11 @@ function VaccinePage(props) {
     },
     {
       title: "Độ tuổi sử dụng",
-      dataIndex: "age",
+      // dataIndex: "age",
       key: "age",
       align: "center",
       width: 150,
-      render: (value) => value && `${value.min_age} - ${value.max_age} `,
+      render: (_,value) => value && `${value.min_age?`Trên ${value.min_age}`:""}  ${value.max_age?`dưới ${value.max_age}`:""} `,
     },
     {
       title: "Liều lượng",
@@ -60,13 +57,6 @@ function VaccinePage(props) {
       key: "dosage",
       align: "center",
       width: 150,
-    },
-    {
-      title: "Chỉ Định",
-      dataIndex: "specify",
-      key: "specify",
-      align: "center",
-      width: 400,
     },
     {
       title: "Ngày tạo",
@@ -90,15 +80,6 @@ function VaccinePage(props) {
       render: (_, record) => {
         return (
           <Space>
-            <Button
-              icon={<Icon.EditOutlined />}
-              type="primary"
-              ghost
-              onClick={() => {
-                // setIsShowUpdateModal(true);
-                // setQuantityData(record);
-              }}
-            ></Button>
             <Button
               icon={<Icon.FormOutlined />}
               type="primary"
@@ -170,19 +151,12 @@ function VaccinePage(props) {
         </Style.CustomSpace>
       </Style.CustomSpaceBox>
       <Style.CustomTable
-        scroll={{ x: 1700 }}
+        scroll={{ x: 1200 }}
         columns={tableColumn}
         size="small"
         dataSource={tableData}
         loading={vaccineList.load}
       />
-
-      {/* <UpdateQuantityModel
-        isShowUpdateModal={isShowUpdateModal}
-        setIsShowUpdateModal={setIsShowUpdateModal}
-        handleSubmitForm={handleSubmitForm}
-        quantityData={quantityData}
-      /> */}
     </div>
   );
 }

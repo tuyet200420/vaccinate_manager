@@ -26,35 +26,35 @@ function* getStorageListSaga(action) {
   }
 }
 
-// function* createCategorySaga(action) {
-//   try {
-//     const { data } = action.payload;
-//     const result = yield axios.post(`${SERVER_API_URL}/categories`, data);
-//     yield put({
-//       type: SUCCESS(CATEGORY_ACTION.CREATE_CATEGORY),
-//       payload: {
-//         data: result.data
-//       },
-//     });
-//   } catch (e) {
-//     yield put({ type: FAILURE(CATEGORY_ACTION.CREATE_CATEGORY), payload: e.message });
-//   }
-// }
+function* createStorageSaga(action) {
+  try {
+    const { data } = action.payload;
+    const result = yield axios.post(`${SERVER_API_URL}/storage`, data);
+    yield put({
+      type: SUCCESS(STORAGE_ACTION.CREATE_STORAGE),
+      payload: {
+        data: result.data
+      },
+    });
+  } catch (e) {
+    yield put({ type: FAILURE(STORAGE_ACTION.CREATE_STORAGE), payload: e.message });
+  }
+}
 
-// function* editCategorySaga(action) {
-//   try {
-//     const { id, data } = action.payload;
-//     const result = yield axios.patch(`${SERVER_API_URL}/categories/${id}`, data);
-//     yield put({
-//       type: SUCCESS(CATEGORY_ACTION.EDIT_CATEGORY),
-//       payload: {
-//         data: result.data,
-//       }
-//     });
-//   } catch (e) {
-//     yield put({ type: FAILURE(CATEGORY_ACTION.EDIT_CATEGORY), payload: e.message });
-//   }
-// }
+function* editStorageSaga(action) {
+  try {
+    const { id, data } = action.payload;
+    const result = yield axios.put(`${SERVER_API_URL}/storage/${id}`, data);
+    yield put({
+      type: SUCCESS(STORAGE_ACTION.EDIT_STORAGE),
+      payload: {
+        data: result.data,
+      }
+    });
+  } catch (e) {
+    yield put({ type: FAILURE(STORAGE_ACTION.EDIT_STORAGE), payload: e.message });
+  }
+}
 
 function* deleteStorageSaga(action) {
   try {
@@ -71,7 +71,7 @@ function* deleteStorageSaga(action) {
 
 export default function* storageSaga() {
   yield takeEvery(REQUEST(STORAGE_ACTION.GET_STORAGE_LIST), getStorageListSaga);
-//   yield takeEvery(REQUEST(STORAGE_ACTION.CREATE_CATEGORY), createCategorySaga);
-//   yield takeEvery(REQUEST(STORAGE_ACTION.EDIT_CATEGORY), editCategorySaga);
+  yield takeEvery(REQUEST(STORAGE_ACTION.CREATE_STORAGE), createStorageSaga);
+  yield takeEvery(REQUEST(STORAGE_ACTION.EDIT_STORAGE), editStorageSaga);
   yield takeEvery(REQUEST(STORAGE_ACTION.DELETE_STORAGE), deleteStorageSaga);
 }

@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Row, Button, Input, Space, Popconfirm } from "antd";
+import { Button, Input, Space, Popconfirm } from "antd";
 import moment from "moment";
 
 import * as Icon from "@ant-design/icons";
+import ModifyVaccinationPlanModal from "./components/ModifyVaccinationPlanModal";
 
 // import ModifyCategoryModal from "./components/ModifyCategoryModal";
 
 import {
-  getVaccinationPlanListAction
+  getVaccinationPlanListAction,
+  createVaccinationPlanAction,
+  editVaccinationPlanAction,
+  deleteVaccinationPlanAction
 } from "../../../redux/actions";
 
 import * as Style from "./styles";
@@ -16,7 +20,7 @@ import * as Style from "./styles";
 function VaccinationPlanPage(props) {
   const [searchKey, setSearchKey] = useState("");
   const [isShowModifyModal, setIsShowModifyModal] = useState("");
-  // const [modifyCategoryData, setModifyCategoryData] = useState({});
+  const [modifyData, setModifyData] = useState({});
 
   const { vaccinationPlanList } = useSelector((state) => state.vaccinationPlanReducer);
 
@@ -32,39 +36,24 @@ function VaccinationPlanPage(props) {
   //     getStorageListAction()
   //   );
   // }
-  // function handleSubmitForm(values) {
-  //   if (isShowModifyModal === "create") {
-  //     dispatch(
-  //       createCategoryAction({
-  //         data: values,
-  //       })
-  //     );
-  //   } else {
-  //     dispatch(
-  //       editCategoryAction({
-  //         id: modifyCategoryData.id,
-  //         data: values,
-  //       })
-  //     );
-  //   }
-  //   setIsShowModifyModal("");
-  // }
-  // function totalQuantityProduct(productData) {
-  //   return productData.reduce(
-  //     (totalProduct, productItem) =>
-  //       productItem.quantity
-  //         ? totalProduct + productItem.quantity
-  //         : totalProduct,
-  //     0
-  //   );
-  // }
-  // function totalSoldProduct(productData) {
-  //   return productData.reduce(
-  //     (totalProduct, productItem) =>
-  //       productItem.sold ? totalProduct + productItem.sold : totalProduct,
-  //     0
-  //   );
-  // }
+  function handleSubmitForm(values) {
+    if (isShowModifyModal === "create") {
+      dispatch(
+        createVaccinationPlanAction({
+          data: values,
+        })
+      );
+    } else {
+      dispatch(
+        editVaccinationPlanAction({
+          id: modifyData._id,
+          data: values,
+        })
+      );
+    }
+    setIsShowModifyModal("");
+  }
+  
   const tableColumn = [
     {
       title: "Tên vắc xin",
@@ -78,7 +67,6 @@ function VaccinationPlanPage(props) {
       title: "Ngày tiêm",
       dataIndex: "date",
       key: "date",
-      render: (value) => value && moment(value).format("DD/MM/YYYY"),
     },
     {
       title: "Giờ Tiêm",
@@ -111,17 +99,19 @@ function VaccinationPlanPage(props) {
               type="primary"
               ghost
               onClick={() => {
-                // setIsShowModifyModal("edit");
-                // setModifyCategoryData(record);
+                setIsShowModifyModal("edit");
+                setModifyData({
+                  ...record,
+                  vaccine_id:record.vaccine_id._id
+                });
               }}
             >
-              Thêm số lượng
+              Sửa
             </Button>
             <Popconfirm
               title="Bạn có chắc chắn muốn xóa không?"
               onConfirm={() =>
-                // dispatch(deleteStorageAction({ id: record._id }))
-                console.log("123")
+                dispatch(deleteVaccinationPlanAction({ id: record._id }))
               }
               onCancel={() => null}
               okText="Yes"
@@ -158,10 +148,10 @@ function VaccinationPlanPage(props) {
           </Style.Search>
           <Button
             type="primary"
-            // onClick={() => {
-            //   setIsShowModifyModal("create");
-            //   setModifyCategoryData({ name: "", price: 0 });
-            // }}
+            onClick={() => {
+              setIsShowModifyModal("create");
+              setModifyData({ vaccine_id:"",date:moment().format("DD/MM/YYYY"),time:moment().format("HH:mm:ss") });
+            }}
           >
             Thêm mới
           </Button>
@@ -175,12 +165,12 @@ function VaccinationPlanPage(props) {
         loading={vaccinationPlanList.load}
       />
 
-      {/* <ModifyCategoryModal
+      <ModifyVaccinationPlanModal
         isShowModifyModal={isShowModifyModal}
         setIsShowModifyModal={setIsShowModifyModal}
         handleSubmitForm={handleSubmitForm}
-        modifyCategoryData={modifyCategoryData}
-      /> */}
+        modifyData={modifyData}
+      />
     </div>
   );
 }
