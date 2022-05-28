@@ -35,6 +35,16 @@ const SIDEBAR_MENU = [
     title: "Quản Lý Thông Tin Sau Tiêm",
     path: "/admin/afterInjections",
     icon: <Icons.UserOutlined />,
+  },
+  {
+    title: "Quản Lý Đăng Ký Tiêm",
+    path: "/admin/registerVaccinations",
+    icon: <Icons.UserOutlined />,
+  },
+  {
+    title: "Quản Lý Tài Khoản",
+    path: "/admin/users",
+    icon: <Icons.UserOutlined />,
   }
 ];
 

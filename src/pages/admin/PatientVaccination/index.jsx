@@ -12,7 +12,9 @@ import {
   getVaccineListAction,
   createPatientVaccinationAction,
   editPatientVaccinationAction,
-  deletePatientVaccinationAction
+  deletePatientVaccinationAction,
+  getStorageDetailAction,
+  getStorageListAction
 } from "../../../redux/actions";
 
 import * as Style from "./styles";
@@ -38,10 +40,11 @@ function PatientVaccinationPage(props) {
     (state) => state.patientVaccinationReducer
   );
   const { vaccineList } = useSelector((state) => state.vaccineReducer);
-
+  const { storageList , storageDetail} = useSelector((state) => state.storageReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getStorageListAction());
     dispatch(getVaccineListAction());
     dispatch(getPatientVaccinationListAction());
   }, []);
@@ -62,6 +65,7 @@ function PatientVaccinationPage(props) {
       );
     }
     setIsShowModifyModal("");
+    setIsShowModifyStatusModal("");
   }
 
   const tableColumn = [
@@ -168,6 +172,11 @@ function PatientVaccinationPage(props) {
               type="primary"
               onClick={() => {
                 setIsShowModifyStatusModal("True");
+                dispatch(
+                  getStorageDetailAction({
+                    id: record.vaccine_id._id
+                  })
+                );
                 setModifyData({
                   ...record,
                   vaccine_id: record.vaccine_id._id
@@ -280,6 +289,7 @@ function PatientVaccinationPage(props) {
         setIsShowModifyStatusModal={setIsShowModifyStatusModal}
         handleSubmitForm={handleSubmitForm}
         modifyData={modifyData}
+        storageDetail = {storageDetail}
       />
     </div>
   );

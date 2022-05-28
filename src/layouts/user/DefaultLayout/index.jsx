@@ -4,15 +4,15 @@ import Header from "../Header";
 import Footer from "../Footer";
 import NavBar from "../Navbar";
 function DefaultLayout ({ exact, path, component: Component }){
-  const [sticky,setSticky]=useState(false);
+  // const [sticky,setSticky]=useState(false);
 
-  window.addEventListener('scroll',()=>{
-    if(window.scrollY >=100){
-      setSticky(true);
-    }
-    else
-      setSticky(false);
-  })
+  // window.addEventListener('scroll',()=>{
+  //   if(window.scrollY >=100){
+  //     setSticky(true);
+  //   }
+  //   else
+  //     setSticky(false);
+  // })
 
   return (
 
@@ -22,8 +22,8 @@ function DefaultLayout ({ exact, path, component: Component }){
       render={(routeProps) => {
         return (
           <>
-            <Header sticky={sticky} />
-            <NavBar sticky={sticky} {...routeProps}/>
+            <Header />
+            <NavBar {...routeProps}/>
             <div>
               <Component {...routeProps} />
             </div>

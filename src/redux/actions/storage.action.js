@@ -5,3 +5,4 @@ export const getStorageListAction = createAction(REQUEST(STORAGE_ACTION.GET_STOR
 export const createStorageAction = createAction(REQUEST(STORAGE_ACTION.CREATE_STORAGE));
 export const editStorageAction = createAction(REQUEST(STORAGE_ACTION.EDIT_STORAGE));
 export const deleteStorageAction = createAction(REQUEST(STORAGE_ACTION.DELETE_STORAGE));
+export const getStorageDetailAction = createAction(REQUEST(STORAGE_ACTION.GET_STORAGE_DETAIL));

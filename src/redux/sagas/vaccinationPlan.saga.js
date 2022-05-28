@@ -4,16 +4,15 @@ import { REQUEST, SUCCESS, FAILURE, VACCINATION_PLAN_ACTION } from '../constants
 import { SERVER_API_URL } from './apiUrl';
 
 function* getVaccinationPlanListSaga(action) {
-  // const departmentId = action.payload?.departmentId
+  const filter = action.payload?.filter
   try {
     const result = yield axios({
       method: 'GET',
       url: `${SERVER_API_URL}/vaccination_plan`,
-      // params: {
-      //   ...departmentId && {
-      //     departmentId: departmentId,
-      //   },
-      // }
+      params: {
+        ...filter && {
+          q: filter,
+        }}
     })
     yield put({
       type: SUCCESS(VACCINATION_PLAN_ACTION.GET_VACCINATION_PLAN_LIST),

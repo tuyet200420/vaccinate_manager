@@ -11,7 +11,8 @@ import {
   getStorageListAction,
   deleteStorageAction,
   createStorageAction,
-  editStorageAction
+  editStorageAction,
+  getStorageDetailAction
 } from "../../../redux/actions";
 
 import * as Style from "./styles";
@@ -22,7 +23,7 @@ function StoragePage(props) {
   const [modifyStorageData, setModifyStorageData] = useState({});
 
 
-  const { storageList } = useSelector((state) => state.storageReducer);
+  const { storageList,storageDetail} = useSelector((state) => state.storageReducer);
 
   const dispatch = useDispatch();
 

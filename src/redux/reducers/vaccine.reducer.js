@@ -101,8 +101,8 @@ const vaccineReducer = createReducer(initialState, {
   [SUCCESS(VACCINE_ACTION.EDIT_VACCINE)]: (state, action) => {
     const { data } = action.payload;
     const newVaccineList = [...state.vaccineList.data];
-    const productIndex = newVaccineList.findIndex((product) => product.id === data.id);
-    newVaccineList.splice(productIndex, 1, data);
+    const vaccineIndex = newVaccineList.findIndex((vaccine) => vaccine.id === data.id);
+    newVaccineList.splice(vaccineIndex, 1, data);
     return {
       ...state,
       vaccineList: {

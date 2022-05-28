@@ -9,7 +9,7 @@ import ModifyAfterInjectionModal from "./components/ModifyAfterInjectionModal";
 import {
   getPatientVaccinationListAction,
   getVaccineListAction,
-  editPatientVaccinationAction,
+  editPatientVaccinationAction
 } from "../../../redux/actions";
 
 import * as Style from "./styles";
@@ -31,6 +31,7 @@ function AfterInjectionPage(props) {
     dispatch(getPatientVaccinationListAction({
       status:"Đã tiêm"
     }));
+    
   }, []);
 
   function handleSubmitForm(values) {
@@ -40,6 +41,7 @@ function AfterInjectionPage(props) {
           data: values,
         })
       );
+      
     setIsShowModifyModal("");
   }
 

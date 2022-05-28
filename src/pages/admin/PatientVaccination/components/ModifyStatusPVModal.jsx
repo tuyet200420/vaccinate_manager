@@ -1,20 +1,23 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Modal, Form, Select, Button } from "antd";
+
 import {
-  Modal,
-  Form,
-  Select,
-  Button
-} from "antd";
+  editStorageAction,
+} from "../../../../redux/actions";
 
 function ModifyStatusPVModal({
   isShowModifyStatusModal,
   setIsShowModifyStatusModal,
   handleSubmitForm,
   modifyData,
+  storageDetail
 }) {
+
   const { Option } = Select;
   const [modifyForm] = Form.useForm();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isShowModifyStatusModal) {
@@ -22,6 +25,10 @@ function ModifyStatusPVModal({
     }
   }, [isShowModifyStatusModal]);
 
+  console.log(storageDetail)
+  
+
+  // console.log(storageDetail);
 
   return (
     <Modal
@@ -41,11 +48,38 @@ function ModifyStatusPVModal({
         form={modifyForm}
         name="modify-form"
         initialValues={modifyData}
-        onFinish={(values) =>{
+        onFinish={(values) => {
+          if (values.status == "Đã tiêm"){
+            dispatch(
+              editStorageAction({
+                id: storageDetail.data._id,
+                data: {
+                  vaccine_id: storageDetail.data.vaccine_id._id,
+                  quantity: storageDetail.data.quantity - 1 ,
+                  quantity_import: storageDetail.data.quantity_import,
+                  quantity_sold : storageDetail.data.quantity_sold + 1
+                },
+              })
+            );
+          }
+          else{
+            dispatch(
+              editStorageAction({
+                id: storageDetail.data._id,
+                data: {
+                  vaccine_id: storageDetail.data.vaccine_id._id,
+                  quantity: storageDetail.data.quantity + 1 ,
+                  quantity_import: storageDetail.data.quantity_import,
+                  quantity_sold : storageDetail.data.quantity_sold - 1
+                },
+              })
+            );
+          }
+
           handleSubmitForm({
             ...modifyData,
-            status:values.status
-          })
+            status: values.status,
+          });
         }}
       >
         <Form.Item
@@ -57,7 +91,6 @@ function ModifyStatusPVModal({
             <Option value="Đã tiêm">Đã tiêm</Option>
           </Select>
         </Form.Item>
-        
       </Form>
     </Modal>
   );
