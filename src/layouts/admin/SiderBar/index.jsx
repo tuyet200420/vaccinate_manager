@@ -67,7 +67,9 @@ function Sidebar({ location }) {
   
   return (
     <>
-      <Menu theme="dark" mode="inline">
+      <Menu theme="dark" mode="inline"
+      style={{paddingTop:50}}
+      >
         {renderSidebarMenu()}
       </Menu>
     </>

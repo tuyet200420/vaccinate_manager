@@ -21,7 +21,7 @@ function VaccinePage(props) {
               onClick={() => history.push(`/vaccine/${vaccineItem._id}`)}
               key={`vaccine-${vaccineIndex}`}
             >
-              <img src={vaccineItem.image} alt="" width="100%" />
+              <img src={vaccineItem.image} alt="" width="100%" height="230px" />
               <h4>{vaccineItem.name}</h4>
 
               <Style.Description

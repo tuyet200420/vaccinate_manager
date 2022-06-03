@@ -83,6 +83,49 @@ const userReducer = createReducer(initialState, {
       },
     }
   },
+  [REQUEST(USER_ACTION.LOGIN)]: (state, action) => {
+    return {
+      ...state,
+      userDetail: {
+        ...state.userDetail,
+        load: true,
+      },
+    };
+  },
+  [SUCCESS(USER_ACTION.LOGIN)]: (state, action) => {
+    const { data } = action.payload;
+    return {
+      ...state,
+      userDetail: {
+        ...state.userDetail,
+        data,
+        load: false,
+        error: null,
+      },
+    }
+  },
+  [REQUEST(USER_ACTION.LOGOUT)]: (state, action) => {
+    return {
+      ...state,
+      userDetail: {
+        ...state.userDetail,
+        data:{},
+        load: false,
+        error: null,
+      },
+    };
+  },
+  [FAILURE(USER_ACTION.LOGIN)]: (state, action) => {
+    const { error } = action.payload;
+    return {
+      ...state,
+      userDetail: {
+        ...state.userDetail,
+        load: false,
+        error,
+      },
+    }
+  },
 
   [SUCCESS(USER_ACTION.CREATE_USER)]: (state, action) => {
     const { data } = action.payload;
@@ -97,6 +140,8 @@ const userReducer = createReducer(initialState, {
       },
     }
   },
+
+  
 
   [SUCCESS(USER_ACTION.EDIT_USER)]: (state, action) => {
     const { data } = action.payload;

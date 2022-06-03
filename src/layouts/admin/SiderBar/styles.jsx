@@ -5,7 +5,7 @@ export const SiderBarContainer = styled.div`
   left: 0;
   display: flex;
   flex-direction: column;
-  padding: 20px 50px;
+  padding: 80px 50px;
   transition: all .3s;
   height: calc(100vh - 90px);
   background-color: #ff7875;

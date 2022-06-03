@@ -24,7 +24,7 @@ function DefaultLayout ({ exact, path, component: Component }){
           <>
             <Header />
             <NavBar {...routeProps}/>
-            <div>
+            <div style={{minHeight:"60vh"}}>
               <Component {...routeProps} />
             </div>
             <Footer />

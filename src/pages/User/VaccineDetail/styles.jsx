@@ -3,7 +3,9 @@ import styled from "styled-components";
 export const Banner = styled.div`
   background: url(${props => props.img});
   padding:100px 40px ;
-  text-align:center ;
+  background-repeat:no-repeat ;
+  text-align: center;
+  background-size:100%;
   & h1{
     color: white ;
   }

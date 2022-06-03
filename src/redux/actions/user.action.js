@@ -6,3 +6,5 @@ export const getUserDetailAction = createAction(REQUEST(USER_ACTION.GET_USER_DET
 export const createUserAction = createAction(REQUEST(USER_ACTION.CREATE_USER));
 export const editUserAction = createAction(REQUEST(USER_ACTION.EDIT_USER));
 export const deleteUserAction = createAction(REQUEST(USER_ACTION.DELETE_USER));
+export const loginAction = createAction(REQUEST(USER_ACTION.LOGIN));
+export const logoutAction = createAction(REQUEST(USER_ACTION.LOGOUT));

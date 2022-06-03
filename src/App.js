@@ -1,4 +1,5 @@
-// import logo from './logo.svg';
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Router, Switch } from "react-router-dom";
 import history from "./utils/history";
 import AdminLayout from "./layouts/admin/AdminLayout";
@@ -17,20 +18,56 @@ import HomePage from "./pages/User/Home/Index";
 import VaccineUserPage from "./pages/User/Vaccine";
 import VaccineDetailPage from "./pages/User/VaccineDetail";
 import VaccinationPlanUserPage from "./pages/User/VaccinationPlan";
+import RegisterVaccinePage from "./pages/User/RegisterVaccine";
+import HistoryVaccinationPage from "./pages/User/HistoryVaccination";
+import PersonalInformationPage from "./pages/User/PersonalInformation";
+
+import LayoutNone from "./layouts/LayoutNone";
+import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
 
 import "antd/dist/antd.css";
 import "./App.css";
 import "./assets/css/base.css";
-
+import { loginAction, getUserDetailAction } from "./redux/actions";
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      dispatch(getUserDetailAction({ id: userInfo }));
+    }
+  }, []);
   return (
     <>
       <Router history={history}>
         <Switch>
+          <LayoutNone exact path="/login" component={LoginPage} />
+          <LayoutNone exact path="/register" component={RegisterPage} />
+
           <DefaultLayout exact path="/" component={HomePage} />
           <DefaultLayout exact path="/vaccine" component={VaccineUserPage} />
-          <DefaultLayout exact path="/vaccine/:id" component={VaccineDetailPage} />
-          <DefaultLayout exact path="/injection_schedule" component={VaccinationPlanUserPage} />
+          <DefaultLayout exact path="/personal_information" component={PersonalInformationPage} />
+          <DefaultLayout
+            exact
+            path="/register_vaccination"
+            component={RegisterVaccinePage}
+          />
+          <DefaultLayout
+            exact
+            path="/history_vaccine"
+            component={HistoryVaccinationPage}
+          />
+          <DefaultLayout
+            exact
+            path="/vaccine/:id"
+            component={VaccineDetailPage}
+          />
+          <DefaultLayout
+            exact
+            path="/injection_schedule"
+            component={VaccinationPlanUserPage}
+          />
 
           <AdminLayout exact path="/admin" component={DashboardPage} />
           <AdminLayout exact path="/admin/vaccines" component={VaccinePage} />

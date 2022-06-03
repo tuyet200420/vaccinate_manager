@@ -1,7 +1,7 @@
-import { Route } from "react-router-dom";
 import React, { useState } from "react";
-// import { useState } from 'react';
+import { Redirect, Route } from "react-router-dom";
 import HeaderLayOut from "../Header";
+import { useSelector, useDispatch } from "react-redux";
 import Sidebar from "../SiderBar";
 import { Layout, Grid } from 'antd';
 
@@ -15,11 +15,17 @@ function AdminLayout({ exact, path, component: Component }) {
   // const [isShowSiderBar,setIsShowSiderBar]=useState(true);
   const [collapsed, setCollapsed] = useState(false);
   const screens = useBreakpoint();
-
+  const { userDetail } = useSelector((state) => state.userReducer);
+const userInfo = localStorage.getItem("userInfo");
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
   };
-  
+  if (!userInfo) {
+    return <Redirect to="/login" />;
+  } else {
+    if (userDetail.data.role === "User") {
+      return <Redirect to="/" />;
+    } else {
   return (
     <Route
       exact={exact}
@@ -27,7 +33,7 @@ function AdminLayout({ exact, path, component: Component }) {
       render={(routeProps) => {
         return (
           <>
-            <Layout >
+            <Layout  >
               <Sider
                 breakpoint="lg"
                 width={270}
@@ -69,6 +75,6 @@ function AdminLayout({ exact, path, component: Component }) {
       }}
     />
   );
-
+    }}
 }
 export default AdminLayout

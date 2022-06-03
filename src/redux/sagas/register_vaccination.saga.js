@@ -1,5 +1,7 @@
 import { put, takeEvery,debounce } from "redux-saga/effects";
 import axios from "axios";
+import history from "../../utils/history";
+import { notification } from "antd";
 import {
   REQUEST,
   SUCCESS,
@@ -11,6 +13,7 @@ import { SERVER_API_URL } from "./apiUrl";
 function* getRegisterVaccinationListSaga(action) {
   try {
     const searchKey = action.payload?.searchKey;
+    const userId = action.payload?.userId;
     const result = yield axios({
       method: "get",
       url: `${SERVER_API_URL}/register_vaccination`,
@@ -19,6 +22,7 @@ function* getRegisterVaccinationListSaga(action) {
         // // _order: "desc",
         // _embed: "productOptions",
         ...(searchKey && { q: searchKey }),
+        ...(userId && { userId: userId }),
       },
     });
     yield put({
@@ -74,6 +78,12 @@ function* createRegisterVaccinationSaga(action) {
         data: result.data,
       },
     });
+    if (result.data) {
+      yield notification.success({
+        message: "Đăng ký thành công!",
+      });
+      yield history.push("/history_vaccine");
+    }
   } catch (e) {
     yield put({
       type: FAILURE(REGISTER_VACCINATION_ACTION.CREATE_REGISTER_VACCINATION),

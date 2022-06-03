@@ -6,6 +6,7 @@ import { SERVER_API_URL } from './apiUrl';
 function* getPatientVaccinationListSaga(action) {
   const filter = action.payload?.filter
   const status = action.payload?.status
+  const s = action.payload?.s
   try {
     const result = yield axios({
       method: 'GET',
@@ -16,6 +17,9 @@ function* getPatientVaccinationListSaga(action) {
         },
         ...status && {
           status: status,
+        },
+        ...s && {
+          s: s,
         },
       }
     })

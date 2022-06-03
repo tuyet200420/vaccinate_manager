@@ -26,9 +26,10 @@ export const HeaderDesktop = styled.div`
     box-shadow: 0 1px 2px #cecece;
     border-bottom: 1px solid #ccc;
     & .container {
-      width: 1170px;
-      padding-right: 15px;
-      padding-left: 15px;
+      padding-left:80px ;
+      padding-right:80px ;
+      /* padding-right: 15px;
+      padding-left: 15px; */
       margin-right: auto;
       margin-left: auto;
       display:flex ;
@@ -78,3 +79,16 @@ export const Cart = styled.div`
     opacity: 0.6;
   }
 `;
+export const Account = styled(Space)`
+  height: 100%;
+  cursor: pointer;
+  & .avatar{
+    border-radius:50%;
+    width: 30px;
+    padding-top: 100%;
+    background-image:url(${(props) => props.avatar?props.avatar:null });
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+`

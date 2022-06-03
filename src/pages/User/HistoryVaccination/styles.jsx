@@ -2,13 +2,13 @@ import styled from "styled-components";
 import { Table, Button, List, Space } from "antd";
 
 export const Banner = styled.div`
-  background: url(${props => props.img});
-  padding:80px 40px ;
-  background-repeat:no-repeat ;
+  background: url(${(props) => props.img});
+  padding: 80px 40px;
+  background-repeat: no-repeat;
   text-align: center;
-  background-size:100%;
-  & h1{
-    color: white ;
+  background-size: 100%;
+  & h1 {
+    color: white;
   }
 `;
 
@@ -19,12 +19,6 @@ export const Title = styled.h3`
   margin: 0;
   font-weight: 900;
 `;
-export const ContainerTable = styled.div`
-  /* width:1000px ; */
-  margin:80px auto ;
-  padding:80px ;
-  background-color:#2b398f21 ;
-`;
 export const CustomButton = styled(Button)`
   height: auto;
   font-size: 16px;
@@ -33,10 +27,23 @@ export const Search = styled.div`
   display: flex;
   flex: 1;
   font-weight: 900;
+  max-width:500px ;
+  margin-bottom:20px ;
+`;
+export const Container = styled.div`
+  padding:80px ;
+  & h2 {
+    background: #1d5d98d5;
+    padding: 2px 10px;
+    color: white;
+    text-transform: uppercase;
+  }
 `;
 export const CustomTable = styled(Table)`
   & th {
     text-transform: uppercase;
+    background-color: #096dd9 !important;
+    color: white !important;
     white-space: nowrap;
   }
 `;
