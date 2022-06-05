@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-
+import { useSelector, useDispatch } from "react-redux";
 import history from "../../../utils/history";
 
 import * as Icons from "@ant-design/icons";
@@ -42,34 +42,36 @@ const SIDEBAR_MENU = [
     icon: <Icons.UserOutlined />,
   },
   {
+    title: "Tin nhắn",
+    path: "/admin/messengers",
+    icon: <Icons.CommentOutlined />,
+  },
+  {
     title: "Quản Lý Tài Khoản",
     path: "/admin/users",
     icon: <Icons.UserOutlined />,
-  }
+  },
 ];
 
 function Sidebar({ location }) {
-
   function renderSidebarMenu() {
     return SIDEBAR_MENU.map((sidebarItem, sidebarIndex) => {
       return (
-          <Menu.Item
-              icon={sidebarItem.icon}
-              key={sidebarIndex}
-              active={location.pathname === sidebarItem.path}
-              onClick={() => history.push(sidebarItem.path)}
-            >
-              {sidebarItem.title}
-          </Menu.Item>
+        <Menu.Item
+          icon={sidebarItem.icon}
+          key={sidebarIndex}
+          active={location.pathname === sidebarItem.path}
+          onClick={() => history.push(sidebarItem.path)}
+        >
+          {sidebarItem.title}
+        </Menu.Item>
       );
     });
   }
-  
+
   return (
     <>
-      <Menu theme="dark" mode="inline"
-      style={{paddingTop:50}}
-      >
+      <Menu theme="dark" mode="inline" style={{ paddingTop: 50 }}>
         {renderSidebarMenu()}
       </Menu>
     </>

@@ -51,7 +51,7 @@ const vaccineReducer = createReducer(initialState, {
     }
   },
 
-  [REQUEST(VACCINE_ACTION.GET_PRODUCT_DETAIL)]: (state, action) => {
+  [REQUEST(VACCINE_ACTION.GET_VACCINE_DETAIL)]: (state, action) => {
     return {
       ...state,
       vaccineDetail: {

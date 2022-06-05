@@ -7,6 +7,7 @@ import vaccineReducer from './vaccine.reducer';
 import patientVaccinationReducer from './patientVaccination.reducer';
 import registerVaccinationReducer from './registerVaccination.reducer';
 import userReducer from './user.reducer';
+import messengerReducer from './messenger.reducer';
 import rootSaga from '../sagas';
 
 let sagaMiddleware = createSagaMiddleware();
@@ -18,6 +19,7 @@ const store = configureStore({
     vaccinationPlanReducer:vaccinationPlanReducer,
     patientVaccinationReducer:patientVaccinationReducer,
     userReducer:userReducer,
+    messengerReducer:messengerReducer,
     registerVaccinationReducer: registerVaccinationReducer
   },
   middleware: [...getDefaultMiddleware({ thunk: false }), sagaMiddleware],

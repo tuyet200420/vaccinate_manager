@@ -13,6 +13,7 @@ import PatientVaccinationPage from "./pages/admin/PatientVaccination";
 import RegisterVaccinationPage from "./pages/admin/RegisterVaccination";
 import DashboardPage from "./pages/admin/Dashboard";
 import ModifyVaccine from "./pages/admin/ModifyVaccine";
+import MessengerPage from "./pages/admin/Messenger";
 
 import HomePage from "./pages/User/Home/Index";
 import VaccineUserPage from "./pages/User/Vaccine";
@@ -96,6 +97,16 @@ function App() {
             exact
             path="/admin/afterInjections"
             component={AfterInjectionPage}
+          />
+          <AdminLayout
+            exact
+            path="/admin/messengers"
+            component={MessengerPage}
+          />
+          <AdminLayout
+            exact
+            path="/admin/messengers/:id"
+            component={MessengerPage}
           />
           <AdminLayout
             exact

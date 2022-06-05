@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { DatePicker, Form, Select, Button, Input, Col, Row } from "antd";
+import { DatePicker, Form, Select, notification,Button, Input, Col, Row } from "antd";
 import banner from "../../../assets/images/banner.jpg";
 import axios from "axios";
 import user from "../../../assets/images/user.png";
@@ -24,7 +24,8 @@ function PersonalInformationPage(props) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const dateFormat = "YYYY/MM/DD";
-
+  const [birthday, setBirthday] = useState();
+  const [userForm] = Form.useForm();
   // function handleSubmitForm(values) {
   //   console.log(values);
   //   dispatch(
@@ -87,7 +88,19 @@ function PersonalInformationPage(props) {
       ward: value,
     });
   };
-
+const handleSubmitForm = (value)=>{
+  dispatch(
+    editUserAction({
+      id: userDetail.data._id,
+      data: {
+        ...value
+      },
+    })
+  );
+  notification.success({
+    message: "Cập nhật thành công!",
+  });
+}
   return (
     <div>
       <Style.Banner img={banner}>
@@ -101,16 +114,34 @@ function PersonalInformationPage(props) {
         </div>
         <div className="form-box">
           <Form
-            // form={modifyForm}
+            form={userForm}
             name="modify-user"
             layout="vertical"
             initialValues={userDetail.data}
-            // onFinish={
-            //   (values) => handleSubmitForm({
-            //     ...modifyData,
-            //     ...values
-            //   })
-            // }
+            onFinish={
+              (values) =>{
+                const { dateNew, dateTarget, ...value } = values;
+                if (userDetail.data._id) {
+                  handleSubmitForm({
+                    ...value,
+                    _id: userDetail.data._id,
+                    birthday: birthday,
+                    address:
+                      value.address +
+                      " - " +
+                      location.wards.find((ward) => ward.code === value.ward)
+                        .name +
+                      " - " +
+                      location.districts.find(
+                        (district) => district.code === value.district
+                      ).name +
+                      " - " +
+                      location.cities.find((city) => city.code === value.city)
+                        .name,
+                  });
+                }
+              }
+            }
           >
             <Row gutter={12}>
               <Col span={12}>
@@ -149,15 +180,14 @@ function PersonalInformationPage(props) {
                   label="Ngày sinh: "
                   name="dateNew"
                   Style={{ width: "100%" }}
-                  rules={[
-                    { required: true, message: "Bạn chưa nhập ngày sinh" },
-                  ]}
+                  
                 >
                   <DatePicker
+                  defaultValue={moment(userDetail.data.birthday, dateFormat)} 
                     style={{ width: "100%" }}
                     format={dateFormat}
                     onChange={(date, dateString) => {
-                      // setBirthday(dateString);
+                      setBirthday(dateString);
                     }}
                   />
                 </Form.Item>
@@ -169,12 +199,7 @@ function PersonalInformationPage(props) {
                 <Form.Item
                   label="Tỉnh-Thành phố"
                   name="city"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng chọn tỉnh thành phố!",
-                    },
-                  ]}
+                  
                 >
                   <Select
                     placeholder="Chọn tỉnh thành phố"
@@ -195,12 +220,7 @@ function PersonalInformationPage(props) {
                 <Form.Item
                   label="Quận-Huyện"
                   name="district"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng chọn quận huyện!",
-                    },
-                  ]}
+                  
                 >
                   <Select
                     placeholder="Chọn quận huyện"
@@ -229,12 +249,7 @@ function PersonalInformationPage(props) {
                 <Form.Item
                   label="Phường-Xã"
                   name="ward"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng chọn phường xã!",
-                    },
-                  ]}
+                  
                 >
                   <Select
                     placeholder="Chọn phường xã"
@@ -283,8 +298,7 @@ function PersonalInformationPage(props) {
                   background: "#1f28af",
                 }}
                 onClick={() => {
-                  // console.log("ok")
-                  // registerForm.submit();
+                  userForm.submit();
                 }}
               >
                 Cập nhật thông tin

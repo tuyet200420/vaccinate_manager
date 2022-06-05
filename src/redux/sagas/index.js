@@ -6,6 +6,7 @@ import vaccinationPlanSaga from './vaccinationPlan.saga';
 import storageSaga from './storage.saga';
 import userSaga from './user.saga';
 import registerVaccinationSaga from './register_vaccination.saga';
+import messengerSaga from './messenger.saga';
 
 export default function* rootSaga() {
   yield fork(vaccineSaga);
@@ -14,4 +15,5 @@ export default function* rootSaga() {
   yield fork(storageSaga);
   yield fork(userSaga);
   yield fork(registerVaccinationSaga);
+  yield fork(messengerSaga);
 }

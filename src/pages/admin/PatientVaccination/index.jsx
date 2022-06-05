@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Space, Select, Popconfirm } from "antd";
+import * as XLSX from "xlsx";
 import moment from "moment";
 
 import * as Icon from "@ant-design/icons";
@@ -14,7 +15,7 @@ import {
   editPatientVaccinationAction,
   deletePatientVaccinationAction,
   getStorageDetailAction,
-  getStorageListAction
+  getStorageListAction,
 } from "../../../redux/actions";
 
 import * as Style from "./styles";
@@ -40,7 +41,9 @@ function PatientVaccinationPage(props) {
     (state) => state.patientVaccinationReducer
   );
   const { vaccineList } = useSelector((state) => state.vaccineReducer);
-  const { storageList , storageDetail} = useSelector((state) => state.storageReducer);
+  const { storageDetail } = useSelector(
+    (state) => state.storageReducer
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -67,6 +70,12 @@ function PatientVaccinationPage(props) {
     setIsShowModifyModal("");
     setIsShowModifyStatusModal("");
   }
+  const handleExport = () => {
+    var wb = XLSX.utils.book_new();
+    var vs = XLSX.utils.json_to_sheet(DataExport);
+    XLSX.utils.book_append_sheet(wb, vs, "MySheet1");
+    XLSX.writeFile(wb, "MyExcel.xlsx");
+  };
 
   const tableColumn = [
     {
@@ -174,12 +183,12 @@ function PatientVaccinationPage(props) {
                 setIsShowModifyStatusModal("True");
                 dispatch(
                   getStorageDetailAction({
-                    id: record.vaccine_id._id
+                    id: record.vaccine_id._id,
                   })
                 );
                 setModifyData({
                   ...record,
-                  vaccine_id: record.vaccine_id._id
+                  vaccine_id: record.vaccine_id._id,
                 });
               }}
             ></Button>
@@ -191,7 +200,7 @@ function PatientVaccinationPage(props) {
                 setIsShowModifyModal("edit");
                 setModifyData({
                   ...record,
-                  vaccine_id: record.vaccine_id._id
+                  vaccine_id: record.vaccine_id._id,
                 });
               }}
             ></Button>
@@ -230,7 +239,25 @@ function PatientVaccinationPage(props) {
       };
     }
   );
+  const DataExport = patientVaccinationList.data.map(
+    (patientVaccinationItem, patientVaccinationIndex) => {
+      return {
+        "Mã số trẻ": patientVaccinationItem.code_number,
+        "Tên trẻ": patientVaccinationItem.name,
+        "Ngày sinh": patientVaccinationItem.birthday,
+        "Giới tính": patientVaccinationItem.gender,
+        "Địa chỉ": patientVaccinationItem.address,
+        "SDT liên hệ": patientVaccinationItem.phone_number,
+        "Người dám hộ": patientVaccinationItem.guardian,
+        "Tình trạng": patientVaccinationItem.status,
+      };
+    }
+  );
 
+  console.log(
+    "🚀 ~ file: index.jsx ~ line 256 ~ patientVaccinationIndex",
+    DataExport
+  );
   return (
     <div>
       <Style.Title>Quản lý Kế Danh Sách Tiêm Chủng</Style.Title>
@@ -240,14 +267,14 @@ function PatientVaccinationPage(props) {
           onClick={() => {
             setIsShowModifyModal("create");
             setModifyData({
-              vaccine_id:"",
+              vaccine_id: "",
               code_number: "",
               name: "",
               address: "",
               gender: "",
               guardian: "", //ng dám hộ
               phone_number: "",
-              birthday:moment().format("DD/MM/YYYY"),
+              birthday: moment().format("DD/MM/YYYY"),
               price: 0,
             });
           }}
@@ -258,7 +285,7 @@ function PatientVaccinationPage(props) {
       <span style={{ marginRight: "10px" }}>Chọn vắc xin:</span>
       <Select
         style={{ width: 400, marginBottom: 10 }}
-        size="small"
+        size="middle"
         onChange={(value) =>
           dispatch(
             getPatientVaccinationListAction({
@@ -269,6 +296,15 @@ function PatientVaccinationPage(props) {
       >
         {optionVaccineList}
       </Select>
+      <Button
+        type="primary"
+        onClick={() => dispatch(getPatientVaccinationListAction())}
+      >
+        Hiển thị tất cả
+      </Button>
+      <Button type="primary" ghost onClick={() => handleExport()}>
+        Xuất File EXCEL
+      </Button>
 
       <Style.CustomTable
         scroll={{ x: 1500 }}
@@ -289,7 +325,7 @@ function PatientVaccinationPage(props) {
         setIsShowModifyStatusModal={setIsShowModifyStatusModal}
         handleSubmitForm={handleSubmitForm}
         modifyData={modifyData}
-        storageDetail = {storageDetail}
+        storageDetail={storageDetail}
       />
     </div>
   );
