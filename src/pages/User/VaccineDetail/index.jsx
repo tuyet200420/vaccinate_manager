@@ -2,17 +2,23 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Row, Button, Space, Popconfirm, Input, Col } from "antd";
 import * as Icon from "@ant-design/icons";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import history from "../../../utils/history";
 import moment from "moment";
-import { getVaccineDetailAction } from "../../../redux/actions";
+import { Pie } from "react-chartjs-2";
+import { getVaccineDetailAction,
+          getStorageDetailAction 
+} from "../../../redux/actions";
 
 import * as Style from "./styles";
 import bannerVaccine from "../../../assets/images/banner.jpg";
 function VaccineDetailPage({ match }) {
-  console.log(match);
+  ChartJS.register(ArcElement, Tooltip, Legend);
+  const [dataChart, setDataChart] = useState([100, 100, 100]);
   const vaccineId = match.params.id;
   console.log(vaccineId);
   const { vaccineDetail } = useSelector((state) => state.vaccineReducer);
+  const { storageDetail } = useSelector((state) => state.storageReducer);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
@@ -27,7 +33,35 @@ function VaccineDetailPage({ match }) {
         id: vaccineId,
       })
     );
+    dispatch(
+      getStorageDetailAction({
+        id: vaccineId,
+      })
+    );
   }, [vaccineId]);
+  useEffect(() => {
+    setDataChart([
+      storageDetail.data.quantity_import,
+      storageDetail.data.quantity_sold,
+      storageDetail.data.quantity,
+    ]);
+  }, [storageDetail]);
+  const data = {
+    labels: ["Đã Nhập", "Đã Tiêm", "Tồn kho"],
+    datasets: [
+      {
+        label: "Vắc Xin",
+        data: [...dataChart],
+        backgroundColor: [
+          "rgba(252, 7, 60, 0.2)",
+          "rgba(8, 156, 255, 0.2)",
+          "rgba(8, 255, 41, 0.2)",
+        ],
+        borderColor: ["#f7063a", "#0397fa", "#03fa2c"],
+        borderWidth: 1,
+      },
+    ],
+  };
   return (
     <>
       <div>
@@ -37,9 +71,9 @@ function VaccineDetailPage({ match }) {
         <h1>Tên Vắc Xin: {vaccineDetail.data.name}</h1>
         <Row>
           <Col span={12}>
-            <img src={vaccineDetail.data.image} alt="" width="100%"/>
+            <img src={vaccineDetail.data.image} alt="" width="100%" style={{boxShadow: "0 0 3px gray"}} />
           </Col>
-          <Col span={12}>
+          <Col span={5}>
             <div className="right">
               <p>
                 <span className="title">Liều lượng:</span>{" "}
@@ -62,6 +96,11 @@ function VaccineDetailPage({ match }) {
                 } `}</span>
               </p>
             </div>
+          </Col >
+          <Col span={7}>
+          <Style.ChartBox>
+          <Pie data={data} />;
+        </Style.ChartBox>
           </Col>
         </Row>
 

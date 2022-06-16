@@ -37,3 +37,6 @@ export const ContainerVaccineDetail = styled.div`
     font-size:20px ;
   }
 `;
+export const ChartBox = styled.div`
+  width:300px ;
+`;

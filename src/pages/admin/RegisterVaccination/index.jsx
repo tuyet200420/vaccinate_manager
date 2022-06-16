@@ -27,20 +27,25 @@ const COLORSTATUS = {
     Bg_color: "#d91111",
     color: "white",
   },
+  HUY: {
+    Bg_color: "#5c5a5a",
+    color: "white",
+  },
 };
 
 function RegisterVaccinationPage(props) {
   const [isShowModifyModal, setIsShowModifyModal] = useState("");
   const [modifyData, setModifyData] = useState({});
 
-  const { registerVaccinationList } = useSelector((state) => state.registerVaccinationReducer);
-  const { storageDetail} = useSelector((state) => state.storageReducer);
+  const { registerVaccinationList } = useSelector(
+    (state) => state.registerVaccinationReducer
+  );
+  const { storageDetail } = useSelector((state) => state.storageReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getRegisterVaccinationListAction());
   }, []);
-
 
   function handleSearch(value) {
     dispatch(
@@ -51,12 +56,12 @@ function RegisterVaccinationPage(props) {
   }
 
   function handleSubmitForm(values) {
-    console.log(values)
+    console.log(values);
     dispatch(
       editRegisterVaccinationAction({
         id: modifyData._id,
         data: {
-          ...values
+          ...values,
         },
       })
     );
@@ -112,11 +117,17 @@ function RegisterVaccinationPage(props) {
       key: "address",
     },
     {
+      title: "Ngày mong muốn",
+      dataIndex: "target_date",
+      align: "center",
+      key: "target_date"
+    },
+    {
       title: "Vắc xin đăng ký",
       dataIndex: "vaccine_id",
       align: "center",
       key: "vaccine_id",
-      render: (value) => value && value.name
+      render: (value) => value && value.name,
     },
     {
       title: "Trạng thái",
@@ -130,7 +141,9 @@ function RegisterVaccinationPage(props) {
               background:
                 value == "Chờ duyệt"
                   ? COLORSTATUS.CHODUYET.Bg_color
-                  : value == "Chờ tiêm"?COLORSTATUS.CHOTIEM.Bg_color:COLORSTATUS.DATIEM.Bg_color,
+                  : value == "Chờ tiêm"
+                  ? COLORSTATUS.CHOTIEM.Bg_color
+                  :value == "Hủy"?COLORSTATUS.HUY.Bg_color: COLORSTATUS.DATIEM.Bg_color,
               color: "white",
               borderRadius: 10,
               padding: "1px 4px",
@@ -168,15 +181,16 @@ function RegisterVaccinationPage(props) {
             <Button
               icon={<Icon.FormOutlined />}
               type="primary"
+              disabled={record.status == "Hủy"}
               ghost
               onClick={() => {
                 setIsShowModifyModal("edit");
                 dispatch(
                   getStorageDetailAction({
-                    id: record.vaccine_id._id
+                    id: record.vaccine_id._id,
                   })
                 );
-                setModifyData({...record});
+                setModifyData({ ...record });
               }}
             >
               Cập nhật trạng thái
@@ -218,7 +232,7 @@ function RegisterVaccinationPage(props) {
         </Style.CustomSpace>
       </Style.CustomSpaceBox>
       <Style.CustomTable
-        scroll={{ x: "1500px" }}
+        scroll={{ x: "1900px" }}
         size="small"
         columns={tableColumn}
         dataSource={tableData}
@@ -230,7 +244,7 @@ function RegisterVaccinationPage(props) {
         setIsShowModifyModal={setIsShowModifyModal}
         handleSubmitForm={handleSubmitForm}
         modifyData={modifyData}
-        storageDetail = {storageDetail}
+        storageDetail={storageDetail}
       />
     </div>
   );

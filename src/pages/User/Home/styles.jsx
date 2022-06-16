@@ -11,6 +11,17 @@ export const IntroduceContainer = styled.div`
     border-top-left-radius: 50px;
     border-bottom-right-radius: 50px;
   }
+  & .title_home_color{
+    margin-top: 40px;
+    font-size: 30px;
+    font-weight: bold;
+    
+    margin-bottom: 30px;
+    text-align: center;
+    & h3{
+      color: #16A085;
+    }
+  }
 `;
 export const ImgActiveContainer = styled.div`
   margin-top: 30px;

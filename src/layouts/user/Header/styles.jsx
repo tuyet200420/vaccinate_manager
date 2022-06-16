@@ -79,6 +79,11 @@ export const Cart = styled.div`
     opacity: 0.6;
   }
 `;
+export const Chat = styled.div`
+  position:fixed ;
+  bottom:15px ;
+  right:10px ;
+`;
 export const Account = styled(Space)`
   height: 100%;
   cursor: pointer;
@@ -92,3 +97,50 @@ export const Account = styled(Space)`
     background-size: cover;
   }
 `
+export const ChatList = styled.div`
+  overflow-y: scroll;
+  height: 300px;
+  position:relative ;
+  & .showMsg{
+    min-height: 300px;
+  }
+`;
+export const ChatItem = styled.div`
+  margin-bottom: 10px;
+  & .admin {
+    background-color: #80808032;
+    padding: 10px;
+    border-radius: 10px;
+    /* margin-right: 100px; */
+    /* margin:5px ; */
+  }
+  & .user {
+    text-align: right;
+    background-color: #096dd98b;
+    padding: 10px;
+    border-radius: 10px;
+    /* margin-left: 100px; */
+    /* margin:5px */
+  }
+  `;
+  export const ChatBox = styled.div`
+  position:sticky ;
+  left:0 ;
+  bottom:0 ;
+  width:100% ;
+  background-color:white ;
+  border-top:1px solid blue;
+  & .chat-box-container{
+    margin-top:20px ;
+    display:flex ;
+    align-items: center ;
+    & .icon{
+      margin-left:5px;
+      color: blue;
+      cursor: pointer;
+      &:hover{
+        color:blueviolet ;
+      }
+    }
+  }
+`;

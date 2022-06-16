@@ -63,7 +63,7 @@ function ModifyRegisterVaccinationModal({
         }}
       >
         <Form.Item label="Tên:" name="name" disabled>
-          <Input />
+          <Input disabled/>
         </Form.Item>
         <Form.Item
           label="Trạng Thái: "

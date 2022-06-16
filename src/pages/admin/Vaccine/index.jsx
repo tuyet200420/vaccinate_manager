@@ -85,10 +85,6 @@ function VaccinePage(props) {
               type="primary"
               ghost
               onClick={() => {
-                // {
-                //   dispatch(setProductSelectActionAdmin(record));
-                // }
-                // console.log(record);
                 history.push(`/admin/vaccines/edit/${record._id}`);
               }}
             ></Button>

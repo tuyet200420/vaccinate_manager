@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Space, Select, Popconfirm } from "antd";
+import { Row, Col, Select, Popconfirm } from "antd";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import moment from "moment";
@@ -9,11 +9,10 @@ import * as Icon from "@ant-design/icons";
 import {
   getStorageDetailAction,
   getVaccineListAction,
-  getPatientVaccinationListAction
+  getPatientVaccinationListAction,
 } from "../../../redux/actions";
 
 import * as Style from "./styles";
-
 
 const COLORSTATUS = {
   CHUATIEM: {
@@ -26,7 +25,6 @@ const COLORSTATUS = {
   },
 };
 
-
 function DashboardPage() {
   ChartJS.register(ArcElement, Tooltip, Legend);
   const { Option } = Select;
@@ -36,6 +34,7 @@ function DashboardPage() {
   const { storageDetail } = useSelector((state) => state.storageReducer);
   const { vaccineList } = useSelector((state) => state.vaccineReducer);
   const [dataChart, setDataChart] = useState([100, 100, 100]);
+  const [dataChart2, setDataChart2] = useState([100, 100]);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getVaccineListAction());
@@ -43,6 +42,11 @@ function DashboardPage() {
     dispatch(
       getStorageDetailAction({
         id: "62680914fd7aa75e1faa5672",
+      })
+    );
+    dispatch(
+      getPatientVaccinationListAction({
+        filter: "62680914fd7aa75e1faa5672",
       })
     );
   }, []);
@@ -53,6 +57,10 @@ function DashboardPage() {
       storageDetail.data.quantity,
     ]);
   }, [storageDetail]);
+
+  useEffect(() => {
+    setDataChart2([GetCountDone, GetCountNotDone]);
+  }, [patientVaccinationList.data]);
 
   const tableColumn = [
     {
@@ -145,7 +153,6 @@ function DashboardPage() {
       key: "updatedAt",
       render: (value) => value && moment(value).format("DD/MM/YYYY HH:mm"),
     },
-    
   ];
 
   const tableData = patientVaccinationList.data.map(
@@ -156,7 +163,23 @@ function DashboardPage() {
       };
     }
   );
+  const GetCountDone = patientVaccinationList.data.reduce(
+    (sum, item, index) => {
+      var j = 0;
+      if(item.status == "Chưa tiêm"){j = 0}  else {j= 1}
+      return sum +j
+    },
+    0
+  );
 
+  const GetCountNotDone = patientVaccinationList.data.reduce(
+    (sum, item, index) => {
+      var i = 0;
+      if(item.status == "Chưa tiêm"){i =  1}  else {i= 0}
+      return sum +i;
+    },
+    0
+  );
 
   const optionVaccineList = vaccineList.data.map(
     (vaccineItem, vaccineIndex) => {
@@ -186,6 +209,21 @@ function DashboardPage() {
       },
     ],
   };
+  const data2 = {
+    labels: ["Đã Tiêm", "Chưa tiêm"],
+    datasets: [
+      {
+        label: "Vắc Xin",
+        data: [...dataChart2],
+        backgroundColor: [
+          "#a0d9113d",
+          "#f7063a44",
+        ],
+        borderColor: ["#4af706", "#fa2003"],
+        borderWidth: 1,
+      },
+    ],
+  };
   return (
     <>
       <div>
@@ -200,14 +238,27 @@ function DashboardPage() {
                 id: value,
               })
             );
+            dispatch(
+              getPatientVaccinationListAction({
+                filter: value,
+              })
+            );
           }}
         >
           {optionVaccineList}
         </Select>
-
-        <Style.ChartBox>
-          <Pie data={data} />;
-        </Style.ChartBox>
+        <Row>
+          <Col span={12}>
+            <Style.ChartBox>
+              <Pie data={data} />;
+            </Style.ChartBox>
+          </Col>
+          <Col span={12}>
+            <Style.ChartBox>
+              <Pie data={data2} />;
+            </Style.ChartBox>
+          </Col>
+        </Row>
       </div>
       <Style.CustomTable
         scroll={{ x: 1500 }}

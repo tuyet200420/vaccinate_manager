@@ -30,13 +30,18 @@ import RegisterPage from "./pages/Register";
 import "antd/dist/antd.css";
 import "./App.css";
 import "./assets/css/base.css";
-import { loginAction, getUserDetailAction } from "./redux/actions";
+import { getMessengerDetailAction, getUserDetailAction,getMessengerListAction } from "./redux/actions";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
       dispatch(getUserDetailAction({ id: userInfo }));
+      dispatch(getMessengerListAction());
+      dispatch(getMessengerDetailAction({
+        id:"0000000000000000000000",
+        q: userInfo
+      }));
     }
   }, []);
   return (

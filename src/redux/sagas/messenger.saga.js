@@ -33,9 +33,13 @@ function* getMessengerListSaga(action) {
 function* getMessengerDetailSaga(action) {
   try {
     const { id } = action.payload;
+    const q = action.payload?.q;
     const result = yield axios({
       method: "GET",
       url: `${SERVER_API_URL}/messenger/${id}`,
+      params: {
+        ...(q && { q: q }),
+      },
     });
     yield put({
       type: SUCCESS(MESSENGER_ACTION.GET_MESSENGER_DETAIL),

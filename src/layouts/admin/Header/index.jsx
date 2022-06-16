@@ -8,12 +8,18 @@ import { logoutAction } from "../../../redux/actions";
 import { useState, useEffect } from "react";
 function HeaderLayOut() {
   const dispatch = useDispatch();
-  const [Count, setCount] = useState("");
+  const { messengerList, messengerDetail } = useSelector(
+    (state) => state.messengerReducer
+  );
   const { userDetail } = useSelector((state) => state.userReducer);
   function handleLogout() {
     localStorage.removeItem("userInfo");
     dispatch(logoutAction());
   }
+
+  const GetCount = messengerList.data.reduce((sum,item, index) => {
+    return sum + item.countAdminSee 
+  },0)
   function renderUserDropdown() {
     return (
       <Menu>
@@ -29,11 +35,13 @@ function HeaderLayOut() {
           <div className="top-bar">
             <div className="container">
               <img src={logo} width="50" />
-              <div>
+              <div style={{cursor:"pointer"}}>
                 {userDetail.data.name ? (
                   <Space size={"large"}>
-                    <div>
-                      <Badge size="small" count={5}>
+                    <div onClick={()=>{
+                      history.push("/admin/messengers")
+                    }}>
+                      <Badge size="small" count={GetCount}>
                         <Icon.CommentOutlined
                           style={{
                             fontSize: "30px",

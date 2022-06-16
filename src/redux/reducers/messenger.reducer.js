@@ -95,6 +95,10 @@ const messengerReducer = createReducer(initialState, {
           ...state.messengerList.data,
         ],
       },
+      messengerDetail: {
+        ...state.messengerDetail,
+        data:data
+      },
     }
   },
 

@@ -21,7 +21,7 @@ export const ItemMsg = styled.div`
   background-color: ${(props) => (props.active ? "beige" : "")};
 `;
 export const ChatList = styled.div`
-  padding: 20px;
+  /* padding: 20px; */
   overflow-y: scroll;
   height: calc(100vh - 200px);
   position:relative ;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Redirect, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Input, Space, Popconfirm } from "antd";
 import banner from "../../../assets/images/banner.jpg";
@@ -8,6 +9,7 @@ import * as Icon from "@ant-design/icons";
 import {
   getRegisterVaccinationListAction,
   getPatientVaccinationListAction,
+  editRegisterVaccinationAction,
 } from "../../../redux/actions";
 
 import * as Style from "./styles";
@@ -15,6 +17,10 @@ import * as Style from "./styles";
 const COLORSTATUS = {
   CHODUYET: {
     Bg_color: "#45f522",
+    color: "white",
+  },
+  HUY: {
+    Bg_color: "#6c6d6c",
     color: "white",
   },
   CHOTIEM: {
@@ -25,6 +31,10 @@ const COLORSTATUS = {
     Bg_color: "#d91111",
     color: "white",
   },
+  CHUATIEM:{
+    Bg_color: "#45f522",
+    color: "white",
+  }
 };
 
 function HistoryVaccinationPage(props) {
@@ -51,18 +61,18 @@ function HistoryVaccinationPage(props) {
   }, []);
 
   function handleSearchPatient(value) {
-    value?
-      dispatch(
-        getPatientVaccinationListAction({
-          s: value,
-        })
-      ):
-      dispatch(
-        getPatientVaccinationListAction({
-          s: "0000000000000000000000000000000",
-        })
-      )
-    
+    console.log("🚀 ~ file: index.jsx ~ line 59 ~ handleSearchPatient ~ value", value)
+    value
+      ? dispatch(
+          getPatientVaccinationListAction({
+            s: value,
+          })
+        )
+      : dispatch(
+          getPatientVaccinationListAction({
+            s: "0000000000000000000000000000000",
+          })
+        );
   }
   const tableColumn2 = [
     {
@@ -160,7 +170,7 @@ function HistoryVaccinationPage(props) {
 
   const tableColumn = [
     {
-      title: "Mã số trẻ",
+      title: "MS trẻ",
       dataIndex: "code_number",
       key: "code_number",
       align: "center",
@@ -170,6 +180,7 @@ function HistoryVaccinationPage(props) {
       dataIndex: "name",
       key: "name",
       align: "center",
+      width: 150,
     },
     {
       title: "Giới tính",
@@ -228,6 +239,8 @@ function HistoryVaccinationPage(props) {
                   ? COLORSTATUS.CHODUYET.Bg_color
                   : value == "Chờ tiêm"
                   ? COLORSTATUS.CHOTIEM.Bg_color
+                  : value == "Hủy"
+                  ? COLORSTATUS.HUY.Bg_color
                   : COLORSTATUS.DATIEM.Bg_color,
               color: "white",
               borderRadius: 10,
@@ -248,6 +261,42 @@ function HistoryVaccinationPage(props) {
       key: "createdAt",
       render: (value) => value && moment(value).format("DD/MM/YYYY HH:mm"),
     },
+    {
+      title: "",
+      dataIndex: "action",
+      key: "action",
+      align: "center",
+      render: (_, record) => {
+        return (
+          <Space>
+            <Popconfirm
+              title="Bạn có chắc chắn muốn hủy không?"
+              onConfirm={() =>
+                dispatch(
+                  editRegisterVaccinationAction({
+                    id: record._id,
+                    data: {
+                      ...record,
+                      status: "Hủy",
+                    },
+                  })
+                )
+              }
+              onCancel={() => null}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button
+                disabled={record.status == "Đã tiêm"}
+                icon={<Icon.CloseOutlined />}
+                type="dashed"
+                danger
+              ></Button>
+            </Popconfirm>
+          </Space>
+        );
+      },
+    },
   ];
 
   const tableData = registerVaccinationList.data.map((Item, Index) => {
@@ -256,7 +305,10 @@ function HistoryVaccinationPage(props) {
       ...Item,
     };
   });
-
+  const userInfo = localStorage.getItem("userInfo");
+  if (!userInfo) {
+    return <Redirect to="/login" />;
+  } else {
   return (
     <div>
       <Style.Banner img={banner}>
@@ -284,22 +336,21 @@ function HistoryVaccinationPage(props) {
               onChange={(e) => handleSearchPatient(e.target.value)}
             />
           </Style.Search>
-          {
-            patientVaccinationList.data.length?(
-              <Style.CustomTable
+          {patientVaccinationList.data.length ? (
+            <Style.CustomTable
               // scroll={{ x: 1500 }}
               size="middle"
               columns={tableColumn2}
               dataSource={tableData2}
               loading={patientVaccinationList.load}
             />
-            ):""
-          }
-          
+          ) : (
+            ""
+          )}
         </div>
       </Style.Container>
     </div>
-  );
+  );}
 }
 
 export default HistoryVaccinationPage;

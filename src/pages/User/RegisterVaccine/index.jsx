@@ -25,7 +25,6 @@ import {
   getVaccineListAction,
   createRegisterVaccinationAction,
 } from "../../../redux/actions";
-
 import * as Style from "./styles";
 
 function RegisterVaccinePage(props) {
@@ -100,12 +99,6 @@ function RegisterVaccinePage(props) {
     });
   }
   function handleSubmitForm(data) {
-    // console.log("yes");
-    console.log(
-      "🚀 ~ file: index.jsx ~ line 102 ~ handleSubmitForm ~ data",
-      data
-    );
-
     dispatch(createRegisterVaccinationAction({ data: data }));
   }
 
@@ -183,7 +176,7 @@ function RegisterVaccinePage(props) {
                       { required: true, message: "Bạn chưa chọn giới tính" },
                     ]}
                   >
-                    <Select placeholder="select your gender">
+                    <Select placeholder="Chọn giới tính">
                       <Option value="Nam">Nam</Option>
                       <Option value="Nữ">Nữ</Option>
                       <Option value="Khác">Khác</Option>
@@ -214,12 +207,7 @@ function RegisterVaccinePage(props) {
                   <Form.Item
                     label="Tỉnh-Thành phố"
                     name="city"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng chọn tỉnh thành phố!",
-                      },
-                    ]}
+                   
                   >
                     <Select
                       placeholder="Chọn tỉnh thành phố"
@@ -240,12 +228,7 @@ function RegisterVaccinePage(props) {
                   <Form.Item
                     label="Quận-Huyện"
                     name="district"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng chọn quận huyện!",
-                      },
-                    ]}
+                    
                   >
                     <Select
                       placeholder="Chọn quận huyện"
@@ -274,12 +257,7 @@ function RegisterVaccinePage(props) {
                   <Form.Item
                     label="Phường-Xã"
                     name="ward"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng chọn phường xã!",
-                      },
-                    ]}
+                    
                   >
                     <Select
                       placeholder="Chọn phường xã"
